@@ -1,13 +1,20 @@
-import type { Component } from 'solid-js';
-
+import { Component, createSignal, onMount } from 'solid-js';
 import logo from './logo.svg';
 import styles from './App.module.css';
+import clickOutside from './use/outsideClick';
 
 const App: Component = () => {
+  const [count, setCount] = createSignal(0);
+  let img: HTMLImageElement | undefined;
+  onMount(() => {
+    clickOutside(img, () =>
+      setCount((c) => c + 1)
+    );
+  });
   return (
     <div class={styles.App}>
       <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
+        <img ref={img} src={logo} class={styles.logo} alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -17,7 +24,7 @@ const App: Component = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn Solid
+          Learn Solid {count()}
         </a>
       </header>
     </div>
